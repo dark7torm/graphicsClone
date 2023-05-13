@@ -3,7 +3,7 @@
 # Monorepo
 
 - [ ] <mark> Ren Taguchi </mark>
-- [ ] Ren 
+- [ ] Ren Tah Goo Chee
 
 ## Important Documents 
 
