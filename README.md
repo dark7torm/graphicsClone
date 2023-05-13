@@ -3,7 +3,6 @@
 # Monorepo
 
 - [ ] <mark> Ren Taguchi </mark>
-  - **(TODO: Change this heading to your name, because your github name is often not your real name)**
 - [ ] Ren 
 
 ## Important Documents 
