@@ -46,13 +46,17 @@ void Input(void){
         // TODO For help: 
         // TODO https://lazyfoo.net/tutorials/SDL/04_key_presses/index.php
         // Or a video tutorial on keyboard input: https://www.youtube.com/watch?v=piEekEUqvKY
-        if(e == 1){
+        if(e.type == SDL_KEYDOWN) {
+            if(e.key.keysym.sym == SDLK_1){
             gSDLGraphicsProgram.SetClearColor(1.0,0.0,0.0,1.0);
-        }else if(e == 2){
+             }else if(e.key.keysym.sym == SDLK_2){
             gSDLGraphicsProgram.SetClearColor(0.0,1.0,0.0,1.0);
-        } else if (e == 3) {
+            } else if (e.key.keysym.sym == SDLK_3) {
             gSDLGraphicsProgram.SetClearColor(0.0,0.0 ,1.0,1.0); 
-        } else gSDLGraphicsProgram.SetClearColor(0.0,0.0 ,0.0,1.0); 
+             } else gSDLGraphicsProgram.SetClearColor(0.0,0.0 ,0.0,1.0); 
+
+        }
+        
 
 	} // End SDL_PollEvent loop.
 
