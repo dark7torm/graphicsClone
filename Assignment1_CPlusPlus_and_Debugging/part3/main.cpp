@@ -3,9 +3,9 @@
 
 int main() {
 
-    const char* name = "ren";
+    int* px = nullptr;
 
-    printf("my name is: %s\n", name);
+    *px = 7;
 
     return 0;   
 }
