@@ -3,7 +3,19 @@
 #include <iostream>
 
 int main(){
+	std::vector<unsigned char> myData;
 
+	for(unsigned int i = 65; i < 91; ++i) {
+		myData.push_back(i);	
+	}
+
+
+	std::vector<unsigned char>::iterator begin = myData.begin();
+	std::vector<unsigned char>::iterator end = myData.end();
+
+	for(; begin != end; begin++) {
+		std::cout << *begin;
+	}
   	// Wow you are learning so much already by typing out these examples.
 	//
 	// Folks in the C++ world 'swear' by iterators.

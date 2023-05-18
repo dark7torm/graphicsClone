@@ -4,6 +4,15 @@
 
 int main(){
 
+  int* pointerV = nullptr;
+
+  int value = 7;
+
+  pointerV = &value;
+
+  std::cout << "The dereferenced value of pointerV is " << *pointerV << std::endl;
+
+
   // Pointers can be tricky.
   // 
   // Feel free to use tools like valgrind and gdb to help you debug.

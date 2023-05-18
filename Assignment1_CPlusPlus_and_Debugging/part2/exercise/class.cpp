@@ -3,6 +3,26 @@
 #include <vector>
 
 
+
+class PPM{
+    public:
+    
+    PPM(unsigned int width, unsigned int height) {
+        pixelData = new unsigned char(width*height*3);
+    }
+
+    ~PPM() {
+        delete[] pixelData;
+    }
+
+
+
+    private:    // Data not visible to a user of 
+            // this object.
+    uint8_t* pixelData;
+
+};
+
 int main(int argc, char** argv){
 
     // You know what you need to do... :) Type it out.
@@ -15,6 +35,6 @@ int main(int argc, char** argv){
     //
     //
     // Anyway, at this point you know most of the C++ you'll need to get you through the course.
-
+    PPM myPPM(64, 128);
     return 0;
 }

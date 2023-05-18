@@ -4,6 +4,18 @@
 
 int main(int argc, char** argv){
 
+  std::vector<int> myData;
+
+  for(int i = 0; i < 42; i++) {
+    myData.push_back(i);
+  }
+
+  int* internalArray = myData.data();
+
+  for(int i = 0; i < myData.size(); i++) {
+    std::cout << internalArray[i] << std::endl;
+  }
+
   // Making you type out this example because
   // it will come in handy...
   //
