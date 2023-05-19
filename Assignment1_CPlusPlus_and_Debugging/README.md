@@ -3,13 +3,13 @@
 *TODO*: Please edit the following information in your assignment
 
 * Name: Ren Taguchi
-* How many hours did it take you to complete this assignment? 
-* Did you collaborate or share ideas with any other students/TAs/Professors? 
-* Did you use any external resources? 
+* How many hours did it take you to complete this assignment? 5
+* Did you collaborate or share ideas with any other students/TAs/Professors? I collaborated/shared ideas with with Nagi Aboushaca
+* Did you use any external resources? Resources mainly to setup SDL2
   * (tbd if any)
   * (tbd if any)
   * (tbd if any)
-* (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+* (Optional) What was the most interesting part of the assignment? How would you improve this assignment? I definitely think the last part was the most interesting, the only thing I'd change is maybe touch on string streams during part 2 since that was really useful during part 4.
 
 # Assignment
 

@@ -2,39 +2,47 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 // Constructor loads a filename with the .ppm extension
 PPM::PPM(std::string fileName){
     std::ifstream input;
     input.open(fileName);
-    int lineNum = 0;
-    if(input.is_open()) {
+    int valueNum = 0;
+    if(!input.is_open()) {
+        std::cout << "Filepath does not exist" << fileName << std::endl;
+        std::cout << "Make sure your path is correct relative to where you execute the program" << std::endl;
+    } 
     std::string line;
-    while(getline(input, line, ' ')) {
-        if (line.compare(" ") != 0) {
-            if(line.compare("P3") != 0 || line.compare("P6") != 0  || line.at(0) == '#') {
-                if(lineNum == 0) {
-                m_width = std::stoi(line);
-                } else if(lineNum == 1) {
-                m_height = std::stoi(line);
-             } else if (lineNum > 2) {
-                m_PixelData.push_back(static_cast<int>(std::stoi(line)));
-                }
-            ++lineNum;
+    while(getline(input, line)) { 
+        std::stringstream stream(line);
+        std::string value;
+        if(line.front() == '#') {
+            continue;
+        }
+        while(stream >> value) {
+            if(value.front() == '#') {
+                break;
+            }
+            if(valueNum == 0 ) {
+                ++valueNum;
+            } else if(valueNum == 1) {
+                m_width = stoi(value);
+                ++valueNum;
+            } else if(valueNum == 2) {
+                m_height = stoi(value);
+                ++valueNum;
+            } else if (valueNum == 3) {
+                m_maxRGB = stoi(value);
+                ++valueNum;
+            } else {
+                m_PixelData.push_back(stoi(value));
             }
         }
-        
-        
     }
-  } else {
-    std::cout << "Filepath does not exist" << fileName << std::endl;
-    std::cout << "Make sure your path is correct relative to where you execute the program" << std::endl;
-  }
+
 
   input.close();
-
-
-
     
 }
 
@@ -50,20 +58,13 @@ void PPM::savePPM(std::string outputFileName) const {
     output.open(outputFileName);
     output << "P3" << std::endl;
     output << "# some_image.ppm" << std::endl;
-    output << getWidth() << " " << getHeight() << std::endl;
-    output << "255" << std::endl;
+    output << m_width << " " << m_height << std::endl;
+    output << m_maxRGB << std::endl;
     int spaceCount = 0;
-    for(int i = 0; i < pixelData().size(); ++i) {
-        output << pixelData().at(i) << "  ";
-        spaceCount++;
-        if(spaceCount == 3) {
-            spaceCount = 0;
-            output << "  ";
-        }
-        if(i % getWidth() == 0) {
-            output << std::endl;
-        }
+    for(int i = 0; i < m_PixelData.size(); ++i) {
+        output << unsigned(m_PixelData.at(i)) << std::endl;
     }
+    output.close();
 
 
 }
