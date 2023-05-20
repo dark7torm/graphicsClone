@@ -31,6 +31,9 @@ SDL_GLContext gOpenGLContext			= nullptr;
 // Main loop flag
 bool gQuit = false; // If this is quit = 'true' then the program terminates.
 
+// boolean for when drawing square or triangle
+bool drawTriangle = true;
+
 // shader
 // The following stores the a unique id for the graphics pipeline
 // program object that will be used for our OpenGL draw calls.
@@ -47,6 +50,9 @@ GLuint gVertexArrayObject					= 0;
 // Vertex Buffer Objects store information relating to vertices (e.g. positions, normals, textures)
 // VBOs are our mechanism for arranging geometry on the GPU.
 GLuint 	gVertexBufferObject					= 0;
+
+GLuint gIndexBufferObject = 0;
+
 
 // Shaders
 // Here we setup two shaders, a vertex shader and a fragment shader.
@@ -254,9 +260,10 @@ void VertexSpecification(){
 	//       functions are packed closer together versus CPU operations.
 	const std::vector<GLfloat> vertexPositions
 	{
-		-0.8f, -0.8f, 0.0f, 	// Left vertex position
-		0.8f, -0.8f, 0.0f,  	// right vertex position
-		0.0f,  0.8f, 0.0f,  	// Top vertex position
+		-0.8f, -0.8f, 0.0f, 	// Bottom left vertex position, 0
+		0.8f, -0.8f, 0.0f,  	// Bottom right vertex position, 1
+		-0.8f,  0.8f, 0.0f,  	// Top left vertex position, 2
+		0.8f,  0.8f, 0.0f,  	// Top right vertex position, 3
 	};
 
 	// Vertex Arrays Object (VAO) Setup
@@ -287,13 +294,12 @@ void VertexSpecification(){
 
 
     // TODO: Setup indices
-    const std::vector<GLuint> indexBufferData { /* add indices here, think about winding order! */ };
+    const std::vector<GLuint> indexBufferData {0, 2, 1, 2, 3, 1};
     // 
     // TODO: Setup the index buffer
-    // e.g.
-    // glGenBuffers(1,.....)
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFEER, ....)
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, ....);
+    glGenBuffers(1, &gIndexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferData.size() * sizeof(GL_UNSIGNED_INT), indexBufferData.data(), GL_STATIC_DRAW);
 
 
 
@@ -365,9 +371,15 @@ void Draw(){
     glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
 
     //Render data
-
+	
+	
     // TODO: Change this draw call to 'glDrawElements'
-    glDrawArrays(GL_TRIANGLES,0,3);
+	if(drawTriangle) {
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+	} else {
+		glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT, nullptr);
+	}
+    
 
 	// Stop using our current graphics pipeline
 	// Note: This is not necessary if we only have one graphics pipeline.
@@ -399,6 +411,14 @@ void Input(){
 	SDL_Event e;
 	//Handle events on queue
 	while(SDL_PollEvent( &e ) != 0){
+		// if users type left or right key
+		if(e.type == SDL_KEYDOWN) {
+        	if(e.key.keysym.sym == SDLK_LEFT){
+            	drawTriangle = true;
+       		}else if(e.key.keysym.sym == SDLK_RIGHT){
+            	drawTriangle = false;
+        	}
+	}
 		// If users posts an event to quit
 		// An example is hitting the "x" in the corner of the window.
 		if(e.type == SDL_QUIT){
