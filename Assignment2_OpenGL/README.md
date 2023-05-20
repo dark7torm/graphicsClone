@@ -2,14 +2,14 @@
 
 *TODO*: Please edit the following information in your assignment
 
-* Name: 
+* Name: Ren Taguchi
 * How many hours did it take you to complete this assignment? 
-* Did you collaborate or share ideas with any other students/TAs/Professors? 
+* Did you collaborate or share ideas with any other students/TAs/Professors? I problem solved / shared ideas with Nagi Aboushaca
 * Did you use any external resources? 
+  * stackoverflow for researching for part 4
   * (tbd if any)
   * (tbd if any)
-  * (tbd if any)
-* (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+* (Optional) What was the most interesting part of the assignment? How would you improve this assignment? I think that part 2 learning to implement what we did last homework with the key presses along with our new use of OpenGL was the most interesting.
 
 # Assignment
 
