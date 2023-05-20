@@ -75,7 +75,7 @@ const std::string gFragmentShaderSource =
 	"out vec4 color;\n"
 	"void main()\n"
 	"{\n"
-	"	color = vec4(1.0f, 0.5f, 0.0f, 1.0f);\n"
+	"	color = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
 	"}\n";
 // ^^^^^^^^^^^^^^^^^^^^^^^^ Globals ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -254,9 +254,9 @@ void VertexSpecification(){
 	//       functions are packed closer together versus CPU operations.
 	const std::vector<GLfloat> vertexPositions
 	{
-		-0.8f, -0.8f, 0.0f, 	// Left vertex position
-		0.8f, -0.8f, 0.0f,  	// right vertex position
-		0.0f,  0.8f, 0.0f,  	// Top vertex position
+		-0.5f, -0.5f, 0.0f, 	// Left vertex position
+		0.2f, -0.4f, 0.0f,  	// right vertex position
+		0.0f,  0.3f, 0.0f,  	// Top vertex position
 	};
 
 	// Vertex Arrays Object (VAO) Setup
@@ -324,7 +324,7 @@ void PreDraw(){
     // Initialize clear color
     // This is the background of the screen.
     glViewport(0, 0, gScreenWidth, gScreenHeight);
-    glClearColor( 1.f, 1.f, 0.f, 1.f );
+    glClearColor( 0.f, 0.f, 0.f, 1.f );
 
     //Clear color buffer and Depth Buffer
   	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
