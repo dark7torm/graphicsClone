@@ -8,38 +8,36 @@
  */
 #ifndef OBJ_HPP
 #define OBJ_HPP
+#include <glm/glm.hpp>
 
 #include <string>
 
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoord;
+};
+
+
+
 class OBJ{
 public:
-    // Constructor loads a filename with the .OBJ extension
+    // Constructor loads a filename with the .obj extension
     OBJ(std::string fileName);
     // Destructor clears any memory that has been allocated
     ~OBJ();
-    // Returns the raw pixel data in an array.
-    // You may research what 'inline' does.
-    // You may also want to research what 'const' does on a function.
-    // In brief, 'const' gaureentees that we are not modifying 
-    // any member variables in a class, and this is useful if we are
-    // returning private member variables.
-    inline std::vector<uint8_t> pixelData() const { return m_PixelData; }
-    // Returns image width
-    inline int getWidth() const { return m_width; }
-    // Returns image height
-    inline int getHeight() const { return m_height; }
-// NOTE:    You may add any helper functions you like in the
-//          private section.
+    
+    inline std::vector<Vertex> getVertices() const { return m_vertices; }
+    inline std::vector<unsigned int> getIndices() const { return m_indices; }
+    inline std::vector<float> getVertexTextures() const { return m_vertex_textures; }
+    inline std::vector<float> getVertexNormals() const { return m_vertex_normals; }
+    inline std::vector<float> getFaces() const { return m_faces; }
 private:    
-    // Store the raw pixel data here
-    // Data is R,G,B format
-    // Note: Yes, you are allowed to replace 'uint8_t* m_PixelDatal' with a std::vector<uint8_t> m_PixelData.
-    //       In fact, using a std::vector will likely make your life easier.    
-    std::vector<uint8_t> m_PixelData;
-    // Store width and height of image.
-    int m_width{0};
-    int m_height{0};
-    int m_maxRGB{0};
+    std::vector<Vertex> m_vertices;
+    std::vector<unsigned int> m_indices;
+    std::vector<float> m_vertex_textures;
+    std::vector<float> m_vertex_normals;
+    std::vector<float> m_faces;
 };
 
 

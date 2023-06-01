@@ -18,6 +18,7 @@
 // C++ Standard Template Library (STL)
 #include <iostream>
 #include <vector>
+#include "obj.hpp"
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvv Globals vvvvvvvvvvvvvvvvvvvvvvvvvv
 // Globals generally are prefixed with 'g' in this application.
@@ -33,7 +34,10 @@ bool gQuit = false; // If this is quit = 'true' then the program terminates.
 
 // boolean for when drawing square or triangle
 bool drawTriangle = true;
-
+// std::string objFile;
+// OBJ* myObj = new OBJ(objFile);
+std::string objFilePath = "";
+OBJ obj2(objFilePath);
 // shader
 // The following stores the a unique id for the graphics pipeline
 // program object that will be used for our OpenGL draw calls.
@@ -52,6 +56,9 @@ GLuint gVertexArrayObject					= 0;
 GLuint 	gVertexBufferObject					= 0;
 
 GLuint gIndexBufferObject = 0;
+
+
+
 
 
 // Shaders
@@ -249,16 +256,8 @@ void InitializeProgram(){
 * @return void
 */
 void VertexSpecification(){
-
-	// Geometry Data
-	// Here we are going to store x,y, and z position attributes within vertexPositons for the data.
-	// For now, this information is just stored in the CPU, and we are going to store this data
-	// on the GPU shortly, in a call to glBufferData which will store this information into a
-	// vertex buffer object.
-	// Note: That I have segregated the data from the OpenGL calls which follow in this function.
-	//       It is not strictly necessary, but I find the code is cleaner if OpenGL (GPU) related
-	//       functions are packed closer together versus CPU operations.
-	const std::vector<GLfloat> vertexPositions
+	const std::vector<GLfloat> vertexPositions = 
+	// myObj.getVertices();
 	{
 		-0.8f, -0.8f, 0.0f, 	// Bottom left vertex position, 0
 		0.8f, -0.8f, 0.0f,  	// Bottom right vertex position, 1
@@ -266,26 +265,14 @@ void VertexSpecification(){
 		0.8f,  0.8f, 0.0f,  	// Top right vertex position, 3
 	};
 
-	// Vertex Arrays Object (VAO) Setup
-	// Note: We can think of the VAO as a 'wrapper around' all of the Vertex Buffer Objects,
-	//       in the sense that it encapsulates all VBO state that we are setting up.
-	//       Thus, it is also important that we glBindVertexArray (i.e. select the VAO we want to use)
-	//       before our vertex buffer object operations.
 	glGenVertexArrays(1, &gVertexArrayObject);
 	// We bind (i.e. select) to the Vertex Array Object (VAO) that we want to work withn.
 	glBindVertexArray(gVertexArrayObject);
 
-	// Vertex Buffer Object (VBO) creation
-	// Create a new vertex buffer object
-	// Note:  We’ll see this pattern of code often in OpenGL of creating and binding to a buffer.
 	glGenBuffers(1, &gVertexBufferObject);
-	// Next we will do glBindBuffer.
-	// Bind is equivalent to 'selecting the active buffer object' that we want to
-	// work with in OpenGL.
+
 	glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
-	// Now, in our currently binded buffer, we populate the data from our
-	// 'vertexPositions' (which is on the CPU), onto a buffer that will live
-	// on the GPU.
+
 	glBufferData(GL_ARRAY_BUFFER, 								// Kind of buffer we are working with 
 																// (e.g. GL_ARRAY_BUFFER or GL_ELEMENT_ARRAY_BUFFER)
 				 vertexPositions.size() * sizeof(GL_FLOAT), 	// Size of data in bytes
@@ -293,10 +280,7 @@ void VertexSpecification(){
 				 GL_STATIC_DRAW);								// How we intend to use the data
 
 
-    // TODO: Setup indices
     const std::vector<GLuint> indexBufferData {0, 2, 1, 2, 3, 1};
-    // 
-    // TODO: Setup the index buffer
     glGenBuffers(1, &gIndexBufferObject);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferData.size() * sizeof(GL_UNSIGNED_INT), indexBufferData.data(), GL_STATIC_DRAW);
@@ -413,11 +397,13 @@ void Input(){
 	while(SDL_PollEvent( &e ) != 0){
 		// if users type left or right key
 		if(e.type == SDL_KEYDOWN) {
-        	if(e.key.keysym.sym == SDLK_LEFT){
-            	drawTriangle = true;
-       		}else if(e.key.keysym.sym == SDLK_RIGHT){
+        	if(e.key.keysym.sym == SDLK_1){
+            	break;
+       		} else if(e.key.keysym.sym == SDLK_w){
             	drawTriangle = false;
-        	}
+        	} else if(e.key.keysym.sym == SDLK_q){
+				gQuit = true;
+			}	
 	}
 		// If users posts an event to quit
 		// An example is hitting the "x" in the corner of the window.
@@ -483,6 +469,14 @@ void CleanUp(){
 * @return program status
 */
 int main( int argc, char* args[] ){
+	if(argc > 2) {
+		std::cout << "There is no .obj model in the command line" << std::endl;
+		return 0;
+	} 
+	objFilePath = args[1];
+	OBJ myObj(objFilePath);
+	obj2 = myObj;
+	// objFile = args[1];
 
 	// 1. Setup the graphics program
 	InitializeProgram();

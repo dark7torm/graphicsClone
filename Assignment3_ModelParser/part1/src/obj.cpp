@@ -3,9 +3,14 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+
 
 // Constructor loads a filename with the .obj extension
 OBJ::OBJ(std::string fileName){
+
+    
     std::ifstream input;
     input.open(fileName);
     if(!input.is_open()) {
@@ -16,21 +21,51 @@ OBJ::OBJ(std::string fileName){
     while(getline(input, line)) { 
         std::stringstream stream(line);
         std::string value;
-        if(line.front() == '#') {
-            continue;
-        }
         while(stream >> value) {
             if(value.front() == 'v') {
-                
+                glm::vec3 position;
+                stream >> position.x >> position.y >> position.z;
+                m_vertices.push_back({ position, glm::vec3(0.0f), glm::vec2(0.0f) });
             } else if(value == "vn") {
-                m_width = stoi(value);
-                
+                glm::vec3 normal;
+                stream >> normal.x >> normal.y >> normal.z;
+                if (!m_vertices.empty()) {
+                m_vertices.back().normal = normal;
+                }
+            } else if(value == "vt") {
+                glm::vec2 texCoord;
+                stream >> texCoord.x >> texCoord.y;
+                if (!m_vertices.empty()) {
+                m_vertices.back().texCoord = texCoord;
+                }
             } else if(value.front() == 'f') {
-                m_height = stoi(value);
-                
+                std::string vertexData;
+                for (unsigned int i = 0; i < 3; ++i) {
+                 stream >> vertexData;
+                    std::istringstream viss(vertexData);
+
+                    std::string indexStr;
+                    std::getline(viss, indexStr, '/');
+                    unsigned int positionIndex = std::stoi(indexStr) - 1;
+
+                    std::getline(viss, indexStr, '/');
+                    unsigned int texCoordIndex = std::stoi(indexStr) - 1;
+
+                    std::getline(viss, indexStr, '/');
+                    unsigned int normalIndex = std::stoi(indexStr) - 1;
+
+                    m_indices.push_back(m_vertices.size());
+
+                    m_vertices.push_back({
+                        m_vertices[positionIndex].position,
+                        m_vertices[normalIndex].normal,
+                        m_vertices[texCoordIndex].texCoord
+                    });
+                }
             }
         }
     }
+    
 
 
   input.close();
