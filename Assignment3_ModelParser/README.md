@@ -3,8 +3,8 @@
 *TODO*: Please edit the following information in your assignment
 
 * Name: 
-* How many hours did it take you to complete this assignment? 
-* Did you collaborate or share ideas with any other students/TAs/Professors? 
+* How many hours did it take you to complete this assignment? 15
+* Did you collaborate or share ideas with any other students/TAs/Professors?  I collaborated with Nagi Aboushaca
 * Did you use any external resources? 
   * (tbd if any)
   * (tbd if any)
