@@ -32,12 +32,10 @@ SDL_GLContext gOpenGLContext			= nullptr;
 // Main loop flag
 bool gQuit = false; // If this is quit = 'true' then the program terminates.
 
-// boolean for when drawing square or triangle
-bool drawTriangle = true;
-// std::string objFile;
-// OBJ* myObj = new OBJ(objFile);
+// boolean for when drawing wireFrame
+bool drawWireFrame = false;
+
 std::string objFilePath = "";
-OBJ obj2(objFilePath);
 // shader
 // The following stores the a unique id for the graphics pipeline
 // program object that will be used for our OpenGL draw calls.
@@ -88,7 +86,7 @@ const std::string gFragmentShaderSource =
 	"out vec4 color;\n"
 	"void main()\n"
 	"{\n"
-	"	color = vec4(1.0f, 0.5f, 0.0f, 1.0f);\n"
+	"	color = vec4(0.8f, 0.8f, 0.8f, 1.0f);\n"
 	"}\n";
 // ^^^^^^^^^^^^^^^^^^^^^^^^ Globals ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -255,15 +253,10 @@ void InitializeProgram(){
 *
 * @return void
 */
-void VertexSpecification(){
-	const std::vector<GLfloat> vertexPositions = 
+void VertexSpecification(OBJ obj){
+	const std::vector<GLfloat> vertexPositions = obj.getPositions();
 	// myObj.getVertices();
-	{
-		-0.8f, -0.8f, 0.0f, 	// Bottom left vertex position, 0
-		0.8f, -0.8f, 0.0f,  	// Bottom right vertex position, 1
-		-0.8f,  0.8f, 0.0f,  	// Top left vertex position, 2
-		0.8f,  0.8f, 0.0f,  	// Top right vertex position, 3
-	};
+	
 
 	glGenVertexArrays(1, &gVertexArrayObject);
 	// We bind (i.e. select) to the Vertex Array Object (VAO) that we want to work withn.
@@ -280,7 +273,7 @@ void VertexSpecification(){
 				 GL_STATIC_DRAW);								// How we intend to use the data
 
 
-    const std::vector<GLuint> indexBufferData {0, 2, 1, 2, 3, 1};
+    const std::vector<GLuint> indexBufferData = obj.getIndices();
     glGenBuffers(1, &gIndexBufferObject);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferData.size() * sizeof(GL_UNSIGNED_INT), indexBufferData.data(), GL_STATIC_DRAW);
@@ -328,7 +321,7 @@ void PreDraw(){
     // Initialize clear color
     // This is the background of the screen.
     glViewport(0, 0, gScreenWidth, gScreenHeight);
-    glClearColor( 1.f, 1.f, 0.f, 1.f );
+    glClearColor( 0.f, 0.f, 0.f, 0.f );
 
     //Clear color buffer and Depth Buffer
   	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -347,7 +340,7 @@ void PreDraw(){
 *
 * @return void
 */
-void Draw(){
+void Draw(OBJ obj){
     // Enable our attributes
 	glBindVertexArray(gVertexArrayObject);
 
@@ -358,10 +351,12 @@ void Draw(){
 	
 	
     // TODO: Change this draw call to 'glDrawElements'
-	if(drawTriangle) {
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+	if(drawWireFrame) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDrawElements(GL_TRIANGLES, obj.getIndices().size(), GL_UNSIGNED_INT, nullptr);
 	} else {
-		glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT, nullptr);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glDrawElements(GL_TRIANGLES, obj.getIndices().size(), GL_UNSIGNED_INT, nullptr);
 	}
     
 
@@ -398,9 +393,9 @@ void Input(){
 		// if users type left or right key
 		if(e.type == SDL_KEYDOWN) {
         	if(e.key.keysym.sym == SDLK_1){
-            	break;
+            	drawWireFrame = false;
        		} else if(e.key.keysym.sym == SDLK_w){
-            	drawTriangle = false;
+            	drawWireFrame = true;
         	} else if(e.key.keysym.sym == SDLK_q){
 				gQuit = true;
 			}	
@@ -421,7 +416,7 @@ void Input(){
 *
 * @return void
 */
-void MainLoop(){
+void MainLoop(OBJ obj){
 
 	// While application is running
 	while(!gQuit){
@@ -431,7 +426,7 @@ void MainLoop(){
 		// place before draw calls
 		PreDraw();
 		// Draw Calls in OpenGL
-		Draw();
+		Draw(obj);
 		//Update screen of our specified window
 		SDL_GL_SwapWindow(gGraphicsApplicationWindow);
 	}
@@ -475,21 +470,20 @@ int main( int argc, char* args[] ){
 	} 
 	objFilePath = args[1];
 	OBJ myObj(objFilePath);
-	obj2 = myObj;
 	// objFile = args[1];
 
 	// 1. Setup the graphics program
 	InitializeProgram();
 	
 	// 2. Setup our geometry
-	VertexSpecification();
+	VertexSpecification(myObj);
 	
 	// 3. Create our graphics pipeline
 	// 	- At a minimum, this means the vertex and fragment shader
 	CreateGraphicsPipeline();
 	
 	// 4. Call the main application loop
-	MainLoop();	
+	MainLoop(myObj);	
 
 	// 5. Call the cleanup function when our program terminates
 	CleanUp();
