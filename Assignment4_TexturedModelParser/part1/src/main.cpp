@@ -376,7 +376,7 @@ void VertexSpecification(OBJ obj){
                           3,  		// The number of components (e.g. x,y,z = 3 components)
                           GL_FLOAT, // Type
                           GL_FALSE, // Is the data normalized
-                          sizeof(GL_FLOAT)*3, 		// Stride
+                          sizeof(GL_FLOAT)*8, 		// Stride
                          (void*)0	// Offset
     );
 
@@ -388,7 +388,7 @@ void VertexSpecification(OBJ obj){
                           3, // r,g,b
                           GL_FLOAT,
                           GL_FALSE,
-                          sizeof(GL_FLOAT)*3,
+                          sizeof(GL_FLOAT)*8,
                           (GLvoid*)(sizeof(GL_FLOAT)*3)
             );
 
@@ -399,7 +399,7 @@ void VertexSpecification(OBJ obj){
                           2, // s,t
                           GL_FLOAT,
                           GL_FALSE,
-						  sizeof(GL_FLOAT)*2,
+						  sizeof(GL_FLOAT)*8,
                           (GLvoid*)(sizeof(GL_FLOAT)*6)
             );
 
@@ -423,9 +423,8 @@ void VertexSpecification(OBJ obj){
 */
 void PreDraw(){
 
-	glEnable(GL_DEPTH_TEST);
 	// Disable depth test and face culling.
-    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
 
 		// Enable texture mapping
