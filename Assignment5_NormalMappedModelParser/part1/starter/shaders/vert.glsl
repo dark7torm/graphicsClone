@@ -21,11 +21,26 @@ out vec3 TangentFragPos;
 
 uniform mat4 modelTransformMatrix; // Object space
 uniform mat4 projectionMatrix;
+
 uniform vec3 lightPos; // Our light source position from where light is hitting this object
 uniform vec3 viewPos;  // Where our camera is
 
 void main()
 {
+
+	FragPos = vec3(modelTransformMatrix * vec4(position, 1.0));   
+    v_texCoord = texCoord;
+    
+    mat3 normalMatrix = transpose(inverse(mat3(modelTransformMatrix)));
+    vec3 T = normalize(normalMatrix * tangents);
+    vec3 N = normalize(normalMatrix * normals);
+    T = normalize(T - dot(T, N) * N);
+    vec3 B = bitangents;
+    
+    mat3 TBN = transpose(mat3(T, B, N));    
+    TangentLightPos = TBN * lightPos;
+    TangentViewPos  = TBN * viewPos;
+	TangentFragPos  = TBN * FragPos;
 
 	gl_Position = projectionMatrix * modelTransformMatrix * vec4(position, 1.0f);;
 

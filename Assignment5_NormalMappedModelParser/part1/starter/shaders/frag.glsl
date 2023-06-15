@@ -20,12 +20,26 @@ void main()
 {
 	// Store the texture coordinates
 	vec3 normal = texture(u_NormalMap, v_texCoord).rgb;
+
+	normal = normalize(normal * 2.0 - 1.0);
+
 	vec3 color =  texture(u_DiffuseMap, v_texCoord).rgb;
 
-	if(v_texCoord.y > 0.5){
-	    FragColor = vec4(normal,1.0);
-	}else{
-	    FragColor = vec4(color,1.0);
-	}
+	FragColor = vec4(normal,1.0);
+
+	vec3 ambient = 0.1 * color;
+
+	vec3 lightDir = normalize(TangentLightPos - TangentFragPos);
+    float diff = max(dot(lightDir, normal), 0.0);
+    vec3 diffuse = diff * color;
+
+	vec3 viewDir = normalize(TangentViewPos - TangentFragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+	
+	vec3 specular = vec3(0.2) * spec;
+    FragColor = vec4(ambient + diffuse + specular, 1.0);
+	
 }
 // ==================================================================
