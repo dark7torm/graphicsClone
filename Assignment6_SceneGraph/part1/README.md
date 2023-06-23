@@ -101,7 +101,8 @@ This involves the following:
 
 In a few sentences why is our approach of storing a local and world transform more efficient than doing a depth-first traversal to find the final position of an object in world space? Note: There is a handy [tutorial](./media/SceneGraphs.pdf) in the repository including more information on scenegraphs which may help you answer.
   
-**Answer here**: *Your answer here*
+
+Keeping a local and world transform is better than searching through everything one by one to find where an object is in the world. It saves time because we don't have to do the same calculations over and over again. Instead, we can just use the stored transforms to quickly know the object's position in the world without going through everything from the beginning each time. This is especially useful when dealing with complicated setups of objects.
   
 ## How to run your program
 

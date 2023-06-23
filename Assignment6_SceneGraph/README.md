@@ -2,9 +2,9 @@
 
 *TODO*: Please edit the following information in your assignment
 
-* Name:
-* How many hours did it take you to complete this assignment? 
-* Did you collaborate or share ideas with any other students/TAs/Professors? 
+* Name: Ren Taguchi
+* How many hours did it take you to complete this assignment? 2
+* Did you collaborate or share ideas with any other students/TAs/Professors? I worked with Nagi Aboushaca
 * Did you use any external resources? 
   * (tbd if any)
   * (tbd if any)

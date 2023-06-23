@@ -128,6 +128,30 @@ SceneNode* Earth;
 // Create the Sun
 Object* sphere;
 SceneNode* Sun;
+
+Object* sphere4;
+SceneNode* Moon2;
+
+Object* sphere5;
+SceneNode* Moon3;
+
+Object* sphere6;
+SceneNode* Moon4;
+
+Object* sphere7;
+SceneNode* Moon5;
+
+Object* sphere8;
+SceneNode* Moon6;
+
+Object* sphere9;
+Object* sphere10;
+
+SceneNode* Venus;
+
+SceneNode* Mars;
+
+
 // ====================== Create the planets =============
 
 //Loops forever!
@@ -136,27 +160,77 @@ void SDLGraphicsProgram::Loop(){
     // ================== Initialize the planets ===============
     static float rotate = 0.0f;
 
-    // Create new geometry for Earth's Moon
-    sphere3 = new Sphere();
-    sphere3->LoadTexture("rock.ppm");
-    // Create a new node using sphere3 as the geometry
-    Moon = new SceneNode(sphere3);
+
+    // Create the Sun
+    sphere = new Sphere();
+    sphere->LoadTexture("./../../common/textures/sun.ppm");
+    Sun = new SceneNode(sphere);
 
     // Create the Earth
     sphere2 = new Sphere();
-    sphere2->LoadTexture("earth.ppm");
+    sphere2->LoadTexture("./../../common/textures/earth.ppm");
     Earth = new SceneNode(sphere2);
-    // Create the Sun
-    sphere = new Sphere();
-    sphere->LoadTexture("sun.ppm");
-    Sun = new SceneNode(sphere);
+
+
+    sphere3 = new Sphere();
+    sphere3->LoadTexture("./../../common/textures/rock.ppm");
+    Moon = new SceneNode(sphere3);
+
+    sphere4 = new Sphere();
+    sphere4->LoadTexture("./../../common/textures/mercury.ppm");
+    Mars = new SceneNode(sphere4);
+
+    sphere5 = new Sphere();
+    sphere5->LoadTexture("./../../common/textures/planet.ppm");
+    Venus = new SceneNode(sphere5);
+
+    sphere6 = new Sphere();
+    sphere6->LoadTexture("./../../common/textures/rock.ppm");
+    Moon2 = new SceneNode(sphere6);
+
+    sphere7 = new Sphere();
+    sphere7->LoadTexture("./../../common/textures/rock.ppm");
+    Moon3 = new SceneNode(sphere7);
+
+    sphere8 = new Sphere();
+    sphere8->LoadTexture("./../../common/textures/rock.ppm");
+    Moon4 = new SceneNode(sphere8);
+
+    sphere9 = new Sphere();
+    sphere9->LoadTexture("./../../common/textures/rock.ppm");
+    Moon5 = new SceneNode(sphere9);
+
+    sphere10 = new Sphere();
+    sphere10->LoadTexture("./../../common/textures/rock.ppm");
+    Moon6 = new SceneNode(sphere10);
+
+    sphere3 = new Sphere();
+    sphere3->LoadTexture("./../../common/textures/rock.ppm");
+
+    Moon = new SceneNode(sphere3);
+
+    
+    
+
+    
+
+    
+    
 
     // Render our scene starting from the sun.
     m_renderer->setRoot(Sun);
     // Make the Earth a child of the Sun
     Sun->AddChild(Earth);
+    Sun->AddChild(Venus);
+    Sun->AddChild(Mars);
     // Make the Moon a child of the Earth
     Earth->AddChild(Moon);
+    Earth->AddChild(Moon2);
+    Venus->AddChild(Moon3);
+    Venus->AddChild(Moon4);
+    Mars->AddChild(Moon5);
+    Mars->AddChild(Moon6);
+
     
     // Set a default position for our camera
     m_renderer->GetCamera(0)->SetCameraEyePosition(0.0f,0.0f,20.0f);
@@ -226,13 +300,101 @@ void SDLGraphicsProgram::Loop(){
         //      The 'Sun' for example will be the only object shown initially
         //      since the rest of the planets are children (or grandchildren)
         //      of the Sun.
-        Sun->GetLocalTransform().LoadIdentity();		
+        static float orbitEarth = 0.001f;
+        orbitEarth += 0.004;
+
+        static float orbitEAxis = 0.001f;
+        orbitEAxis += 0.001;
+
+        static float orbitMoon = 0.0005f;
+        orbitMoon += 0.005;
+
+        static float orbitMars = 0.001f;
+        orbitMars += 0.002;
+
+        static float orbitMAxis = 0.001f;
+        orbitMAxis += 0.001;
+
+        static float orbitVenus = 0.001f;
+        orbitVenus += 0.006;
+
+        static float orbitVAxis = 0.001f;
+        orbitVAxis += 0.001;
+
+        
+    
+
+
+
+
+
+
+        Sun->GetLocalTransform().LoadIdentity();	
+        Sun->GetLocalTransform().Rotate(0.5 * orbitEAxis, 0, 1, 0);
+        Sun->GetLocalTransform().Scale(3, 3, 3);
+
+	
+    
         // ... transform the Sun
 
-        Moon->GetLocalTransform().LoadIdentity();		
+        
+
+
         // ... transform the Moon
 
-        Earth->GetLocalTransform().LoadIdentity();		
+        Earth->GetLocalTransform().LoadIdentity();	
+        Earth->GetLocalTransform().Rotate(0.5 * orbitEarth, 0, 1, 0);
+        Earth->GetLocalTransform().Translate(5, 0, 0);
+        Earth->GetLocalTransform().Rotate(orbitEAxis, 0, 1, 0);
+        Earth->GetLocalTransform().Scale(0.3, 0.3, 0.3);
+
+        Mars->GetLocalTransform().LoadIdentity();	
+        Mars->GetLocalTransform().Rotate(0.5 * orbitMars, 0, 1, 0);
+        Mars->GetLocalTransform().Translate(7, 0, 0);
+        Mars->GetLocalTransform().Rotate(orbitMAxis, 0, 1, 0);
+        Mars->GetLocalTransform().Scale(0.4, 0.4, 0.4);
+
+        Venus->GetLocalTransform().LoadIdentity();	
+        Venus->GetLocalTransform().Rotate(0.5 * orbitVenus, 0, 1, 0);
+        Venus->GetLocalTransform().Translate(3, 0, 0);
+        Venus->GetLocalTransform().Rotate(orbitVAxis, 0, 1, 0);
+        Venus->GetLocalTransform().Scale(0.2, 0.2, 0.2);
+
+        Moon->GetLocalTransform().LoadIdentity();	
+        Moon->GetLocalTransform().Rotate(0.5 * orbitMoon, 0, 1, 0);
+        Moon->GetLocalTransform().Translate(2, 0, 0);
+        Moon->GetLocalTransform().Rotate(orbitEAxis, 0, 1, 0);
+        Moon->GetLocalTransform().Scale(0.5, 0.5, 0.5);
+
+        Moon2->GetLocalTransform().LoadIdentity();	
+        Moon2->GetLocalTransform().Rotate(0.75 * orbitMoon, 0, 1, 0);
+        Moon2->GetLocalTransform().Translate(3, 0, 0);
+        Moon2->GetLocalTransform().Rotate(orbitEAxis, 0, 1, 0);
+        Moon2->GetLocalTransform().Scale(0.4, 0.4, 0.4);
+
+        Moon3->GetLocalTransform().LoadIdentity();	
+        Moon3->GetLocalTransform().Rotate(0.5 * orbitMoon, 0, 1, 0);
+        Moon3->GetLocalTransform().Translate(2, 0, 0);
+        Moon3->GetLocalTransform().Rotate(orbitVAxis, 0, 1, 0);
+        Moon3->GetLocalTransform().Scale(0.5, 0.5, 0.5);
+
+        Moon4->GetLocalTransform().LoadIdentity();	
+        Moon4->GetLocalTransform().Rotate(0.8 * orbitMoon, 0, 1, 0);
+        Moon4->GetLocalTransform().Translate(4, 0, 0);
+        Moon4->GetLocalTransform().Rotate(orbitVAxis, 0, 1, 0);
+        Moon4->GetLocalTransform().Scale(0.3, 0.3, 0.3);
+
+        Moon5->GetLocalTransform().LoadIdentity();	
+        Moon5->GetLocalTransform().Rotate(0.5 * orbitMoon, 0, 1, 0);
+        Moon5->GetLocalTransform().Translate(2, 0, 0);
+        Moon5->GetLocalTransform().Rotate(orbitMAxis, 0, 1, 0);
+        Moon5->GetLocalTransform().Scale(0.5, 0.5, 0.5);
+
+        Moon6->GetLocalTransform().LoadIdentity();	
+        Moon6->GetLocalTransform().Rotate(0.6 * orbitMoon, 0, 1, 0);
+        Moon6->GetLocalTransform().Translate(1, 0, 0);
+        Moon6->GetLocalTransform().Rotate(orbitMAxis, 0, 1, 0);
+        Moon6->GetLocalTransform().Scale(0.25, 0.25, 0.25);
         // ... transform the Earth        
 
         // Update our scene through our renderer

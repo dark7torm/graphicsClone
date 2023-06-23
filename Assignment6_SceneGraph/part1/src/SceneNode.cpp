@@ -63,16 +63,11 @@ void SceneNode::Draw(){
 // TODO: Consider not passting projection and camera here
 void SceneNode::Update(glm::mat4 projectionMatrix, Camera* camera){
     if(m_object!=nullptr){
-        // TODO: Implement here!
-    
-		// ??
-		// ??
-		// ??
-		// ??
-		// ??
-		// ??	
-		// ??
-		// ??	
+		if (m_parent) {
+			m_worldTransform = m_parent->GetWorldTransform() * GetLocalTransform();
+		} else {
+			m_worldTransform = GetLocalTransform();
+		}
 
     	// Now apply our shader 
 		m_shader.Bind();
